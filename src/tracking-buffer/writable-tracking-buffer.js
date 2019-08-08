@@ -68,94 +68,94 @@ module.exports = class WritableTrackingBuffer {
     this.position = 0;
   }
 
-  getUInt8Length() {
+  static getUInt8Length() {
     return 1;
   }
 
-  getUInt16LELength() {
+  static getUInt16LELength() {
     return 2;
   }
 
-  getUInt16BELength() {
+  static getUInt16BELength() {
     return 2;
   }
 
-  getUInt24LELength() {
+  static getUInt24LELength() {
     return 3;
   }
 
-  getUInt32LELength() {
+  static getUInt32LELength() {
     return 4;
   }
 
-  getUInt32BELength() {
+  static getUInt32BELength() {
     return 4;
   }
 
-  getInt8Length() {
+  static getInt8Length() {
     return 1;
   }
 
-  getInt16LELength() {
+  static getInt16LELength() {
     return 2;
   }
 
-  getInt16BELength() {
+  static getInt16BELength() {
     return 2;
   }
 
-  getInt32LELength() {
+  static getInt32LELength() {
     return 4;
   }
 
-  getInt32BELength() {
+  static getInt32BELength() {
     return 4;
   }
 
-  getFloatLELength() {
+  static getFloatLELength() {
     return 4;
   }
 
-  getDoubleLELength() {
+  static getDoubleLELength() {
     return 8;
   }
 
-  getUShortLength() {
+  static getUShortLength() {
     return this.getUInt16LELength();
   }
 
-  getUInt40LELength() {
+  static getUInt40LELength() {
     return this.getInt32LELength() + this.getUInt8Length();
   }
 
-  getUInt64LELength() {
+  static getUInt64LELength() {
     return this.getInt32LELength() + this.getInt32LELength();
   }
 
-  getInt64LELength(value: number) {
+  static getInt64LELength(value: number) {
     const buf = bigint.numberToInt64LE(value);
     return buf.length;
   }
 
-  getStringLength(value: string, encoding: ?Encoding) {
+  static getStringLength(value: string, encoding: ?Encoding) {
     if (encoding == null) {
       encoding = this.encoding;
     }
     return Buffer.byteLength(value, encoding);
   }
 
-  getBVarCharLength(value: string, encoding: ?Encoding) {
+  static getBVarCharLength(value: string, encoding: ?Encoding) {
     if (encoding == null) {
       encoding = this.encoding;
     }
     return this.getStringLength(value, encoding) + this.getUInt8Length();
   }
 
-  getUsVarcharLength(value: string, encoding: ?Encoding) {
+  static getUsVarcharLength(value: string, encoding: ?Encoding) {
     return this.getUInt16LELength() + this.getStringLength(value, encoding);
   }
 
-  getUsVarbyteLength(value: string, encoding: ?Encoding) {
+  static getUsVarbyteLength(value: string, encoding: ?Encoding) {
     if (encoding == null) {
       encoding = this.encoding;
     }
@@ -169,8 +169,7 @@ module.exports = class WritableTrackingBuffer {
     }
   }
 
-  // Need to finish
-  getPLPBodyLength(value: any, encoding: ?Encoding) {
+  static getPLPBodyLength(value: any, encoding: ?Encoding) {
     if (encoding == null) {
       encoding = this.encoding;
     }
@@ -192,11 +191,11 @@ module.exports = class WritableTrackingBuffer {
 
   }
 
-  getBufferLength(value: Buffer) {
+  static getBufferLength(value: Buffer) {
     return value.length;
   }
 
-  getMoneyLength() {
+  static getMoneyLength() {
     return this.getInt32LELength() + this.getInt32LELength();
   }
 
