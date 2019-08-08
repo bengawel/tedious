@@ -85,3 +85,37 @@ exports.nanoSecondRounding = function(test) {
   }
   test.done();
 };
+
+exports.getBigIntRequiedBufferLength = function(test) {
+  // Perform test
+  /*
+  Do something like, create a buffer, store length, add big int to buffer.  Compare difference in length to the getBigIntRequiredLength function
+  */
+  test.done();
+};
+
+exports.getBinaryRequiedBufferLength = function(test) {
+  // Perform test
+  test.done();
+};
+
+exports.getBitRequiedBufferLength = function(test) {
+  // Perform test
+  test.done();
+};
+
+exports.getBitNRequiedBufferLength = function(test) {
+  // Perform test
+  test.done();
+};
+
+exports.getCharRequiedBufferLength = function(test) {
+  // Perform test
+  test.done();
+};
+
+exports.getCharRequiedBufferLength = function(test) {
+  // Perform test
+  test.done();
+};
+
