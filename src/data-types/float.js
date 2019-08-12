@@ -1,3 +1,4 @@
+const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const FloatN = require('./floatn');
 
 module.exports = {
@@ -7,6 +8,18 @@ module.exports = {
 
   declaration: function() {
     return 'float';
+  },
+
+  getTypeInfoBufferLength: function(parameter) {
+    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  },
+
+  getParameterDataBufferLength: function(parameter, options) {
+    if (parameter.value != null) {
+      return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getDoubleLELength();
+    } else {
+      return WritableTrackingBuffer.getUInt8Length();
+    }
   },
 
   writeTypeInfo: function(buffer) {

@@ -1,3 +1,5 @@
+const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
+
 module.exports = {
   id: 0x29,
   type: 'TIMEN',
@@ -32,6 +34,30 @@ module.exports = {
       return 0;
     } else {
       return 7;
+    }
+  },
+
+  getTypeInfoBufferLength: function(parameter) {
+    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  },
+
+  getParameterDataBufferLenght: function(parameter, options) {
+    if (parameter.value != null) {
+      switch (parameter.scale) {
+        case 0:
+        case 1:
+        case 2:
+          return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt24LELength();
+        case 3:
+        case 4:
+          return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt32LELength();
+        case 5:
+        case 6:
+        case 7:
+          return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt40LELength();
+      }
+    } else {
+      return WritableTrackingBuffer.getUInt8Length();
     }
   },
 

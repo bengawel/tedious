@@ -1,3 +1,5 @@
+const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
+
 module.exports = {
   id: 0x22,
   type: 'IMAGE',
@@ -15,6 +17,18 @@ module.exports = {
       return parameter.value.length;
     } else {
       return -1;
+    }
+  },
+
+  getTypeInfoBufferLength: function(parameter) {
+    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getInt32LELength();
+  },
+
+  getParameterDataLength: function(parameter, options) {
+    if (parameter.value != null) {
+      return WritableTrackingBuffer.getInt32LELength() + WritableTrackingBuffer.getBufferLength(parameter.value);
+    } else {
+      return WritableTrackingBuffer.getInt32LELength();
     }
   },
 

@@ -1,4 +1,4 @@
-const WritableTrackingBuffer = require('./tracking-buffer/writable-tracking-buffer');
+const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 
 module.exports = {
   id: 0xF3,
@@ -49,7 +49,7 @@ module.exports = {
     return length;
   },
 
-  getTypeInfoBufferLength(parameter) {
+  getTypeInfoBufferLength: function(parameter) {
     let ref, ref1, ref2, ref3;
     return WritableTrackingBuffer.getUInt8Length() + 
       WritableTrackingBuffer.getBVarCharLength('') + 

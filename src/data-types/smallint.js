@@ -1,3 +1,4 @@
+const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const IntN = require('./intn');
 
 module.exports = {
@@ -7,6 +8,18 @@ module.exports = {
 
   declaration: function() {
     return 'smallint';
+  },
+
+  getTypeInfoBufferLength: function(parameter, options) {
+    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  },
+
+  getParameterDataBufferLength: function(parameter, options) {
+    if (parameter.value != null) {
+      return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getInt16LELength();
+    } else {
+      return WritableTrackingBuffer.getUInt8Length();
+    }
   },
 
   writeTypeInfo: function(buffer) {

@@ -1,3 +1,4 @@
+const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const DecimalN = require('./decimaln');
 
 module.exports = {
@@ -26,6 +27,28 @@ module.exports = {
       return parameter.scale;
     } else {
       return 0;
+    }
+  },
+
+  getTypeInfoBufferLength: function(paramter) {
+    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  },
+
+  getParameterDataBufferLength: function(paramter, options) {
+    if (parameter.value != null) {
+      let length;
+      if (parameter.precision <= 9) {
+        length = WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt32LELength();
+      } else if (parameter.precision <= 19) {
+        length = WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt64LELength();
+      } else if (parameter.precision <= 28) {
+        length = WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt32LELength() + WritableTrackingBuffer.getUInt64LELength();
+      } else {
+        length = WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt32LELength() + WritableTrackingBuffer.getUInt32LELength() + WritableTrackingBuffer.getUInt64LELength();
+      }
+      return length;
+    } else {
+      return WritableTrackingBuffer.getUInt8Length();
     }
   },
 

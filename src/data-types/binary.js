@@ -1,3 +1,4 @@
+const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const NULL = (1 << 16) - 1;
 
 module.exports = {
@@ -26,6 +27,18 @@ module.exports = {
       return parameter.value.length;
     } else {
       return this.maximumLength;
+    }
+  },
+
+  getTypeInfoBufferLength: function(parameter) {
+    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt16LELength();
+  },
+
+  getParameterDataBufferLength: function(paramter, options) {
+    if (parameter.value != null) {
+      return WritableTrackingBuffer.getUInt16LELength()+ WritableTrackingBuffer.getBufferLength(parameter.value.slice(0, Math.min(parameter.length, this.maximumLength)));
+    } else {
+      return WritableTrackingBuffer.getUInt16LELength();
     }
   },
 

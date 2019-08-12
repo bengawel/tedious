@@ -1,3 +1,4 @@
+const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const guidParser = require('../guid-parser');
 
 module.exports = {
@@ -12,6 +13,18 @@ module.exports = {
 
   resolveLength: function() {
     return 16;
+  },
+
+  getTypeInfoBufferLength: function(parameter) {
+    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  },
+
+  getParameterDataBufferLength: function(parameter, options) {
+    if (parameter.value != null) {
+      return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getBufferLength(Buffer.from(guidParser.guidToArray(parameter.value)));
+    } else {
+      return WritableTrackingBuffer.getUInt8Length();
+    }
   },
 
   writeTypeInfo: function(buffer) {
