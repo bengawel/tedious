@@ -1,4 +1,3 @@
-const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const UTC_YEAR_ONE = Date.UTC(2000, 0, -730118);
 
 module.exports = {
@@ -35,31 +34,31 @@ module.exports = {
     }
   },
 
-  getTypeInfoBufferLength: function(paramter) {
-    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  getTypeInfoBufferLength: function(buffer, paramter) {
+    return buffer.getUInt8Length() + buffer.getUInt8Length();
   },
 
-  getParameterDataBufferLength: function(paramter, options) {
+  getParameterDataBufferLength: function(buffer, parameter, options) {
     if (parameter.value != null) {
       let length;
       switch (parameter.scale) {
         case 0:
         case 1:
         case 2:
-          length = WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt24LELength();
+          length = buffer.getUInt8Length() + buffer.getUInt24LELength();
           break;
         case 3:
         case 4:
-          length = WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt32LELength();
+          length = buffer.getUInt8Length() + buffer.getUInt32LELength();
           break;
         case 5:
         case 6:
         case 7:
-          length = WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt40LELength();
+          length = buffer.getUInt8Length() + buffer.getUInt40LELength();
       }
-      return length + WritableTrackingBuffer.getUInt24LELength() + WritableTrackingBuffer.getInt16LELength();
+      return length + buffer.getUInt24LELength() + buffer.getInt16LELength();
     } else {
-      return WritableTrackingBuffer.getUInt8Length();
+      return buffer.getUInt8Length();
     }
   },
 

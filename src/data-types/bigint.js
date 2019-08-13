@@ -1,5 +1,4 @@
 const IntN = require('./intn');
-const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 
 module.exports = {
   id: 0x7F,
@@ -10,16 +9,16 @@ module.exports = {
     return 'bigint';
   },
 
-  getTypeInfoBufferLength: function(parameter) {
-    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  getTypeInfoBufferLength: function(buffer, parameter) {
+    return buffer.getUInt8Length() + buffer.getUInt8Length();
   },
 
-  getParameterDataBufferLength: function(parameter, options) {
+  getParameterDataBufferLength: function(buffer, parameter, options) {
     if (parameter.value != null) {
       const val = typeof parameter.value !== 'number' ? parameter.value : parseInt(parameter.value);
-      return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getInt64LELength(val);
+      return buffer.getUInt8Length() + buffer.getInt64LELength(val);
     } else {
-      return WritableTrackingBuffer.getUInt8Length();
+      return buffer.getUInt8Length();
     }
   },
 

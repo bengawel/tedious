@@ -1,4 +1,3 @@
-const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const BitN = require('./bitn');
 
 module.exports = {
@@ -10,15 +9,15 @@ module.exports = {
     return 'bit';
   },
 
-  getTypeInfoBufferLength: function(parameter) {
-    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  getTypeInfoBufferLength: function(buffer, parameter) {
+    return buffer.getUInt8Length() + buffer.getUInt8Length();
   },
 
-  getParamterDataBufferLength: function(paramter, options) {
+  getParamterDataBufferLength: function(buffer, parameter, options) {
     if (typeof parameter.value === 'undefined' || parameter.value === null) {
-      return WritableTrackingBuffer.getUInt8Length();
+      return buffer.getUInt8Length();
     } else {
-      return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+      return buffer.getUInt8Length() + buffer.getUInt8Length();
     }
   },
 

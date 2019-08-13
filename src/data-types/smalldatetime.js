@@ -1,4 +1,3 @@
-const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const DateTimeN = require('./datetimen');
 
 const EPOCH_DATE = new Date(1900, 0, 1);
@@ -13,15 +12,15 @@ module.exports = {
     return 'smalldatetime';
   },
 
-  getTypeInfoBufferLength: function(parameter) {
-    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  getTypeInfoBufferLength: function(buffer, parameter) {
+    return buffer.getUInt8Length() + buffer.getUInt8Length();
   },
 
-  getParameterDataBufferLength: function(parameter, options) {
+  getParameterDataBufferLength: function(buffer, parameter, options) {
     if (parameter.value != null) {
-      return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt16LELength() + WritableTrackingBuffer.getUInt16LELength();
+      return buffer.getUInt8Length() + buffer.getUInt16LELength() + buffer.getUInt16LELength();
     } else {
-      return WritableTrackingBuffer.getUInt8Length();
+      return buffer.getUInt8Length();
     }
   },
 

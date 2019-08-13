@@ -1,4 +1,3 @@
-const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const YEAR_ONE = new Date(2000, 0, -730118);
 const UTC_YEAR_ONE = Date.UTC(2000, 0, -730118);
 
@@ -13,15 +12,15 @@ module.exports = {
     return 'date';
   },
 
-  getTypeInfoLength: function(paramter) {
-    return WritableTrackingBuffer.getUInt8Length();
+  getTypeInfoLength: function(buffer, paramter) {
+    return buffer.getUInt8Length();
   },
 
-  getParamterDataLength: function(parameter, options) {
+  getParamterDataLength: function(buffer, parameter, options) {
     if (parameter.value != null) {
-      return WritableTrackingBuffer.getUInt8Length()+ WritableTrackingBuffer.getUInt24LELength(); 
+      return buffer.getUInt8Length() + buffer.getUInt24LELength();
     } else {
-      return WritableTrackingBuffer.getUInt8Length();
+      return buffer.getUInt8Length();
     }
   },
 

@@ -1,4 +1,3 @@
-const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const NumericN = require('./numericn');
 
 module.exports = {
@@ -30,23 +29,23 @@ module.exports = {
     }
   },
 
-  getTypeInfoBufferLength: function(parameter) {
-    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  getTypeInfoBufferLength: function(buffer, parameter) {
+    return buffer.getUInt8Length() + buffer.getUInt8Length() + buffer.getUInt8Length() + buffer.getUInt8Length();
   },
 
-  getParameterDataBufferLength: function(parameter, options) {
+  getParameterDataBufferLength: function(buffer, parameter, options) {
     if (parameter.value != null) {
       if (parameter.precision <= 9) {
-        return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt32LELength();
+        return buffer.getUInt8Length() + buffer.getUInt8Length() + buffer.getUInt32LELength();
       } else if (parameter.precision <= 19) {
-        return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt64LELength();
+        return buffer.getUInt8Length() + buffer.getUInt8Length() + buffer.getUInt64LELength();
       } else if (parameter.precision <= 28) {
-        return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUINt64LELength() + WritableTrackingBuffer.getUInt32LELength();
+        return buffer.getUInt8Length() + buffer.getUInt8Length() + buffer.getUINt64LELength() + buffer.getUInt32LELength();
       } else {
-        return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUINt64LELength() + WritableTrackingBuffer.getUInt32LELength() + WritableTrackingBuffer.getUInt32LELength();
+        return buffer.getUInt8Length() + buffer.getUInt8Length() + buffer.getUINt64LELength() + buffer.getUInt32LELength() + buffer.getUInt32LELength();
       }
     } else {
-      return WritableTrackingBuffer.getUInt8Length();
+      return buffer.getUInt8Length();
     }
   },
 

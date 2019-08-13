@@ -86,36 +86,27 @@ exports.nanoSecondRounding = function(test) {
   test.done();
 };
 
-exports.getBigIntRequiedBufferLength = function(test) {
-  // Perform test
-  /*
-  Do something like, create a buffer, store length, add big int to buffer.  Compare difference in length to the getBigIntRequiredLength function
-  */
+exports.testGetTypeInfoBufferLength = function(test) {
+  const types = TYPES.typeByName.map((type) => typeof type.writeTypeInfo === 'function');
+  const initialLength = 500;
+  for (let type of types) {
+    const buffer = new WritableTrackingBuffer(initialLength);
+    type.writeTypeInfo(buffer);
+    const lengthDifference = buffer.length - initialLength;
+    test.deepEqual(lengthDifference, type.getTypeInfoBufferLength(buffer));
+  }
   test.done();
 };
 
-exports.getBinaryRequiedBufferLength = function(test) {
-  // Perform test
+exports.testGetParameterDataBufferLength = function(test) {
+  const types = TYPES.typeByName.map((type) => typeof type.writeTypeInfo === 'function');
+  const initialLength = 500;
+  for (let type of types) {
+    const buffer = new WritableTrackingBuffer(initialLength);
+    type.writeParameterData(buffer);
+    const lengthDifference = buffer.length - initialLength;
+    test.deepEqual(lengthDifference, type.getTypeInfoBufferLength(buffer));
+  }
   test.done();
-};
-
-exports.getBitRequiedBufferLength = function(test) {
-  // Perform test
-  test.done();
-};
-
-exports.getBitNRequiedBufferLength = function(test) {
-  // Perform test
-  test.done();
-};
-
-exports.getCharRequiedBufferLength = function(test) {
-  // Perform test
-  test.done();
-};
-
-exports.getCharRequiedBufferLength = function(test) {
-  // Perform test
-  test.done();
-};
+}
 

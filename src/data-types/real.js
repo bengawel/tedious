@@ -1,4 +1,3 @@
-const WritableTrackingBuffer = require('../tracking-buffer/writable-tracking-buffer');
 const FloatN = require('./floatn');
 
 module.exports = {
@@ -10,15 +9,15 @@ module.exports = {
     return 'real';
   },
 
-  getTypeInfoBufferLength: function(parameter) {
-    return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getUInt8Length();
+  getTypeInfoBufferLength: function(buffer, parameter) {
+    return buffer.getUInt8Length() + buffer.getUInt8Length();
   },
 
-  getParameterDataBufferLength: function(parameter, options) {
+  getParameterDataBufferLength: function(buffer, parameter, options) {
     if (parameter.value != null) {
-      return WritableTrackingBuffer.getUInt8Length() + WritableTrackingBuffer.getFloatLELength();
+      return buffer.getUInt8Length() + buffer.getFloatLELength();
     } else {
-      return WritableTrackingBuffer.getUInt8LEngth();
+      return buffer.getUInt8LEngth();
     }
   },
 

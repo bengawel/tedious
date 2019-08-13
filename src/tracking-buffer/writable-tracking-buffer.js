@@ -68,146 +68,138 @@ module.exports = class WritableTrackingBuffer {
     this.position = 0;
   }
 
-  static getUInt8Length() {
+  getUInt8Length() {
     return 1;
   }
 
-  static getUInt16LELength() {
+  getUInt16LELength() {
     return 2;
   }
 
-  static getUInt16BELength() {
+  getUInt16BELength() {
     return 2;
   }
 
-  static getUInt24LELength() {
+  getUInt24LELength() {
     return 3;
   }
 
-  static getUInt32LELength() {
+  getUInt32LELength() {
     return 4;
   }
 
-  static getUInt32BELength() {
+  getUInt32BELength() {
     return 4;
   }
 
-  static getInt8Length() {
+  getInt8Length() {
     return 1;
   }
 
-  static getInt16LELength() {
+  getInt16LELength() {
     return 2;
   }
 
-  static getInt16BELength() {
+  getInt16BELength() {
     return 2;
   }
 
-  static getInt32LELength() {
+  getInt32LELength() {
     return 4;
   }
 
-  static getInt32BELength() {
+  getInt32BELength() {
     return 4;
   }
 
-  static getFloatLELength() {
+  getFloatLELength() {
     return 4;
   }
 
-  static getDoubleLELength() {
+  getDoubleLELength() {
     return 8;
   }
 
-  static getUShortLength() {
-    return WritableTrackingBuffer.getUInt16LELength();
+  getUShortLength() {
+    return this.getUInt16LELength();
   }
 
-  static getUInt40LELength() {
-    return WritableTrackingBuffer.getInt32LELength() + WritableTrackingBuffer.getUInt8Length();
+  getUInt40LELength() {
+    return this.getInt32LELength() + this.getUInt8Length();
   }
 
-  static getUInt64LELength() {
-    return WritableTrackingBuffer.getInt32LELength() + WritableTrackingBuffer.getInt32LELength();
+  getUInt64LELength() {
+    return this.getInt32LELength() + this.getInt32LELength();
   }
 
-  static getInt64LELength(value: number) {
+  getInt64LELength(value: number) {
     const buf = bigint.numberToInt64LE(value);
     return buf.length;
   }
 
-  static getStringLength(value: string, encoding: ?Encoding) {
+  getStringLength(value: string, encoding: ?Encoding) {
     if (encoding == null) {
       encoding = this.encoding;
     }
     return Buffer.byteLength(value, encoding);
   }
 
-  static getBVarCharLength(value: string, encoding: ?Encoding) {
+  getBVarCharLength(value: string, encoding: ?Encoding) {
     if (encoding == null) {
       encoding = this.encoding;
     }
-    return WritableTrackingBuffer.getStringLength(value, encoding) + WritableTrackingBuffer.getUInt8Length();
+    return this.getStringLength(value, encoding) + this.getUInt8Length();
   }
 
-  static getUsVarcharLength(value: string, encoding: ?Encoding) {
-    return WritableTrackingBuffer.getUInt16LELength() + WritableTrackingBuffer.getStringLength(value, encoding);
+  getUsVarcharLength(value: string, encoding: ?Encoding) {
+    return this.getUInt16LELength() + this.getStringLength(value, encoding);
   }
 
-  static getUsVarbyteLength(value: string, encoding: ?Encoding) {
+  getUsVarbyteLength(value: string, encoding: ?Encoding) {
     if (encoding == null) {
       encoding = this.encoding;
     }
 
     if (value instanceof Buffer) {
-      length = WritableTrackingBuffer.getUInt16LELength() + WritableTrackingBuffer.getBufferLength(value);
+      return this.getUInt16LELength() + this.getBufferLength(value);
     } else {
       value = value.toString();
       const length = Buffer.byteLength(value, encoding);
-      return length + WritableTrackingBuffer.getUInt16LELength();
+      return length + this.getUInt16LELength();
     }
   }
 
-  static getPLPBodyLength(value: any, encoding: ?Encoding) {
+  getPLPBodyLength(value: any, encoding: ?Encoding) {
     if (encoding == null) {
       encoding = this.encoding;
     }
 
-    if (value instanceof Buffer) {
-      if (Buffer.byteLength(value, encoding) > 0) {
-        return WritableTrackingBuffer.getBufferLength(UNKNOWN_PLP_LEN) + WritableTrackingBuffer.getBufferLength(value) + WritableTrackingBuffer.getUInt32LELength() + WritableTrackingBuffer.getUInt32LELength();
-      } else {
-        return WritableTrackingBuffer.getBufferLength(UNKNOWN_PLP_LEN) + WritableTrackingBuffer.getUInt32LELength();
-      }
+    if (value instanceof Buffer && Buffer.byteLength(value, encoding) > 0) {
+      return this.getBufferLength(UNKNOWN_PLP_LEN) + this.getBufferLength(value) + this.getUInt32LELength() + this.getUInt32LELength();
+    } else if (value.length > 0) {
+      return this.getBufferLength(UNKNOWN_PLP_LEN) + this.getUInt32LELength() + this.getUInt32LELength();
     } else {
-      if (value.length > 0) {
-        return WritableTrackingBuffer.getBufferLength(UNKNOWN_PLP_LEN) + WritableTrackingBuffer.getUInt32LELength() + WritableTrackingBuffer.getUInt32LELength();
-      } else {
-        return WritableTrackingBuffer.getBufferLength(UNKNOWN_PLP_LEN) + WritableTrackingBuffer.getUInt32LELength();
-      }
+      return this.getBufferLength(UNKNOWN_PLP_LEN) + this.getUInt32LELength();
     }
-
-
   }
 
-  static getBufferLength(value: Buffer) {
+  getBufferLength(value: Buffer) {
     return value.length;
   }
 
-  static getMoneyLength() {
-    return WritableTrackingBuffer.getInt32LELength() + WritableTrackingBuffer.getInt32LELength();
+  getMoneyLength() {
+    return this.getInt32LELength() + this.getInt32LELength();
   }
 
   writeUInt8(value: number) {
-    const length = WritableTrackingBuffer.getUInt8Length();
+    const length = this.getUInt8Length();
     this.makeRoomFor(length);
     this.buffer.writeUInt8(value, this.position);
     this.position += length;
   }
 
   writeUInt16LE(value: number) {
-    const length = WritableTrackingBuffer.getUInt16LELength();
+    const length = this.getUInt16LELength();
     this.makeRoomFor(length);
     this.buffer.writeUInt16LE(value, this.position);
     this.position += length;
@@ -218,14 +210,14 @@ module.exports = class WritableTrackingBuffer {
   }
 
   writeUInt16BE(value: number) {
-    const length = WritableTrackingBuffer.getUInt16BELength();
+    const length = this.getUInt16BELength();
     this.makeRoomFor(length);
     this.buffer.writeUInt16BE(value, this.position);
     this.position += length;
   }
 
   writeUInt24LE(value: number) {
-    const length = WritableTrackingBuffer.getUInt24LELength();
+    const length = this.getUInt24LELength();
     this.makeRoomFor(length);
     this.buffer[this.position + 2] = (value >>> 16) & 0xff;
     this.buffer[this.position + 1] = (value >>> 8) & 0xff;
@@ -234,7 +226,7 @@ module.exports = class WritableTrackingBuffer {
   }
 
   writeUInt32LE(value: number) {
-    const length = WritableTrackingBuffer.getUInt32LELength();
+    const length = this.getUInt32LELength();
     this.makeRoomFor(length);
     this.buffer.writeUInt32LE(value, this.position);
     this.position += length;
@@ -246,7 +238,7 @@ module.exports = class WritableTrackingBuffer {
   }
 
   writeUInt32BE(value: number) {
-    const length = WritableTrackingBuffer.getUInt32BELength();
+    const length = this.getUInt32BELength();
     this.makeRoomFor(length);
     this.buffer.writeUInt32BE(value, this.position);
     this.position += length;
@@ -264,49 +256,49 @@ module.exports = class WritableTrackingBuffer {
   }
 
   writeInt8(value: number) {
-    const length = WritableTrackingBuffer.getInt8Length();
+    const length = this.getInt8Length();
     this.makeRoomFor(length);
     this.buffer.writeInt8(value, this.position);
     this.position += length;
   }
 
   writeInt16LE(value: number) {
-    const length = WritableTrackingBuffer.getInt16LELength();
+    const length = this.getInt16LELength();
     this.makeRoomFor(length);
     this.buffer.writeInt16LE(value, this.position);
     this.position += length;
   }
 
   writeInt16BE(value: number) {
-    const length = WritableTrackingBuffer.getInt16BELength();
+    const length = this.getInt16BELength();
     this.makeRoomFor(length);
     this.buffer.writeInt16BE(value, this.position);
     this.position += length;
   }
 
   writeInt32LE(value: number) {
-    const length = WritableTrackingBuffer.getInt32LELength();
+    const length = this.getInt32LELength();
     this.makeRoomFor(length);
     this.buffer.writeInt32LE(value, this.position);
     this.position += length;
   }
 
   writeInt32BE(value: number) {
-    const length = WritableTrackingBuffer.getInt32BELength();
+    const length = this.getInt32BELength();
     this.makeRoomFor(length);
     this.buffer.writeInt32BE(value, this.position);
     this.position += length;
   }
 
   writeFloatLE(value: number) {
-    const length = WritableTrackingBuffer.getFloatLELength();
+    const length = this.getFloatLELength();
     this.makeRoomFor(length);
     this.buffer.writeFloatLE(value, this.position);
     this.position += length;
   }
 
   writeDoubleLE(value: number) {
-    const length = WritableTrackingBuffer.getDoubleLELength();
+    const length = this.getDoubleLELength();
     this.makeRoomFor(length);
     this.buffer.writeDoubleLE(value, this.position);
     this.position += length;
@@ -317,7 +309,7 @@ module.exports = class WritableTrackingBuffer {
       encoding = this.encoding;
     }
 
-    const length = WritableTrackingBuffer.getStringLength(value, encoding);
+    const length = this.getStringLength(value, encoding);
     this.makeRoomFor(length);
 
     // $FlowFixMe https://github.com/facebook/flow/pull/5398
